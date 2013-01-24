@@ -4,3 +4,6 @@
 *.jar
 *.war
 *.ear
+
+# Ignore vim autosave-files #
+*.swp
