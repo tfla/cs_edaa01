@@ -1,8 +1,7 @@
 package queue;
 import java.util.*;
 
-public class FifoQueue<E> extends AbstractQueue<E> 
-implements Queue<E> {
+public class FifoQueue<E> extends AbstractQueue<E> implements Queue<E> {
 	private QueueNode<E> last;
 	private int size;
 
@@ -23,7 +22,7 @@ implements Queue<E> {
 	 * @return the number of elements in this queue
 	 */
 	public int size() {		
-		return 0;
+		return size;
 	}
 
 	/**	
@@ -34,7 +33,8 @@ implements Queue<E> {
 	 * 			to this queue, else false
 	 */
 	public boolean offer(E x) {
-		return true;
+		last.next = last.element();
+		return last.add(x);
 	}
 
 	/**	
@@ -44,7 +44,7 @@ implements Queue<E> {
 	 * @return 	the head of this queue, or null if the queue is empty 
 	 */
 	public E poll() {
-		return null;
+		return last.remove(x);
 	}
 
 	/**	
@@ -54,7 +54,7 @@ implements Queue<E> {
 	 * 			if this queue is empty
 	 */
 	public E peek() {
-		return null;
+		return last.element();
 	}
 
 

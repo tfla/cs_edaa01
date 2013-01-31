@@ -88,11 +88,15 @@ public class ArraySet<E> implements SimpleSet<E> {
 	 * specified set are added to this set.
 	 * @return	 true if this set changed as a result of the call
 	 */
-	boolean addAll(SimpleSet<? extends E> s){
+	public boolean addAll(SimpleSet<? extends E> s){
+		boolean added = false;
 		for (E e : s) {
-			set.add(s);
+			add(e);
+			if (!added) {
+				added = true;
+			}
 		}
-		return false;
+		return added;
 	}
 
 }

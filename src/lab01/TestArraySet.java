@@ -10,12 +10,12 @@ import set.ArraySet;
 
 public class TestArraySet {
 	ArraySet<Integer> s;
-	ArraySet<Double> ds;
+	ArraySet<Integer> ds;
 
 	@Before
 	public void setUp() throws Exception {
 		s = new ArraySet<Integer>();
-		ds = new ArraySet<Double>();
+		ds = new ArraySet<Integer>();
 	}
 
 	@After
@@ -120,10 +120,16 @@ public class TestArraySet {
 	
 	@Test
 	public final void testAddAll() {
-		for (int i = 0; i <= 10; i++) {
-			bs.add(i);
+		for (int i = 0; i <= 20; i++) {
+			s.add(i);
+			i++;
 		}
-		assertTrue("addAll for one set returns false", s.addAll(bs));
+		int n = s.size();
+		for (int i = 0; i <= 10; i++) {
+			ds.add(i);
+		}
+		assertTrue("addAll for one set returns false", s.addAll(ds));
+		assertEquals("Different ArrayList size", ds.size()+n, s.size());
 	}
 
 }
