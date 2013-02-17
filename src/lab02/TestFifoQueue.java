@@ -126,5 +126,57 @@ public class TestFifoQueue {
 		assertTrue("Wrong size after poll", myIntQueue.size() == 0);
 		assertTrue("Queue not empty after poll", myIntQueue.isEmpty());
 	}
+	
+	@Test
+	public final void testIterator() {
+		Iterator<Integer> itr = myIntQueue.iterator();
+		assertFalse("Iterator returns true for empty queue", itr.hasNext());
+		try {
+			int i = itr.next();
+			fail("next() of empty queue should throw exception");
+		}
+		catch (NoSuchElementException e) {
+			// success
+		}
+
+		for (int i = 0; i < 10; i++) {
+			myIntQueue.offer(i);
+		}
+
+		int i = 0;
+		while (itr.hasNext()) {
+			assertEquals("next() returns incorrect element", (int) itr.next(), i);
+			i++;
+		}
+	}
+
+	@Test
+	public final void testAppendAll() {
+		FifoQueue<Integer> myIntQueue1 = new FifoQueue<Integer>();
+		
+		// Två tomma köer
+		myIntQueue.append(myIntQueue1);
+		assertTrue("isEmpty() for empty queue fails", myIntQueue.isEmpty());
+
+		// Icke-tom konkateneras till tom
+		for (int i = 0; i < 10; i++) {
+			myIntQueue1.offer(i);	
+		}
+		myIntQueue.append(myIntQueue1);
+		assertEquals("Incorrect size", myIntQueue.size(), 10);
+		assertEquals("Incorrect size", myIntQueue1.size(), 0);
+
+		// Tom kö konkateneras till icke-tom
+		myIntQueue.append(myIntQueue1);
+		assertEquals("Incorrect size", myIntQueue.size(), 10);
+	
+		// Två icke-tomma köer
+		for (int i = 0; i < 10; i++) {
+			myIntQueue1.offer(i);
+		}
+		myIntQueue.append(myIntQueue1);
+		assertEquals("Incorrect size", myIntQueue.size(), 20);
+		assertEquals("Incorrect size", myIntQueue1.size(), 0);
+	}
 
 }
