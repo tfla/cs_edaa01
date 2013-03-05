@@ -1,6 +1,7 @@
 package phonebook;
-import javax.swing.*;
-import java.awt.event.*;
+import javax.swing.JButton;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 
 public class QuitButton extends JButton implements ActionListener {
@@ -14,7 +15,7 @@ public class QuitButton extends JButton implements ActionListener {
 		addActionListener(this);
 	}
 	
-	 public void actionPerformed(ActionEvent e) {
-		
-	 }
+	public void actionPerformed(ActionEvent e) {
+		System.exit(0);
+	}
 }

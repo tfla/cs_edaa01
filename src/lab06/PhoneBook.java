@@ -1,11 +1,21 @@
 package phonebook;
-import java.util.*;
+import java.util.TreeMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
+import java.io.File;
+import java.io.Serializable;
+import java.io.ObjectOutputStream;
+import java.io.ObjectInputStream;
+import java.io.FileOutputStream;
+import java.io.FileInputStream;
 
-public class PhoneBook {
-	private Map<String,LinkedList<String>> phoneBook;
+public class PhoneBook implements Serializable {
+	private TreeMap<String,LinkedList<String>> phoneBook;
+	private int size;
 	
 	public PhoneBook() {
-		
+		phoneBook = new TreeMap<String,LinkedList<String>>();
 	}
 	
 	
@@ -20,7 +30,14 @@ public class PhoneBook {
 	 * @param number The number associated with the specified name
 	 */
 	public void put(String name, String number) {
-		
+		if (phoneBook.containsKey(name)) {
+			phoneBook.get(name).add(number);
+		} else {
+			LinkedList<String> numbers = new LinkedList<String>();
+			numbers.add(number);
+			size++;
+			phoneBook.put(name, numbers);
+		}
 	}
 	
 	
@@ -33,7 +50,7 @@ public class PhoneBook {
 	 * @return true if the specified name was present.
 	 */
 	public boolean remove(String name) {
-		return false;
+		return phoneBook.remove(name) != null;
 	}
 	
 	/**
@@ -44,7 +61,7 @@ public class PhoneBook {
 	 * @return The phone numbers associated with the specified name
 	 */
 	public List<String> findNumber(String name) {
-		return null;
+		return phoneBook.get(name);
 	}
 	
 	/**
@@ -56,7 +73,13 @@ public class PhoneBook {
 	 * @return The list of names associated with the specified number.
 	 */
 	public List<String> findNames(String number) {
-		return null;
+		LinkedList<String> names = new LinkedList<String>();
+		for (String s : phoneBook.keySet()) {
+			if (phoneBook.get(s).contains(number)) {
+				names.add(s);
+			}
+		}
+		return names;
 	}
 	
 	/**
@@ -65,7 +88,7 @@ public class PhoneBook {
 	 * @return The set of all names present in this phone book
 	 */
 	public Set<String> names() {
-		return null;
+		return phoneBook.keySet();
 	}
 	
 	/**
@@ -73,7 +96,7 @@ public class PhoneBook {
 	 * @return true if this phone book is empty
 	 */	
 	public boolean isEmpty() {
-		return true;
+		return phoneBook.isEmpty();
 	}
 	
 	/**
@@ -81,7 +104,28 @@ public class PhoneBook {
 	 * @return The number of names in this phone book
 	 */
 	public int size() {
-		return 0;
+		return size;
 	}
 
+	public void save(File f) {
+		try {
+			ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(f));
+			out.writeObject(phoneBook);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			System.exit(1);
+		}
+	}
+
+	public void open(File f) {
+		try {
+            ObjectInputStream in = new ObjectInputStream(new FileInputStream(f));
+            phoneBook = (TreeMap<String,LinkedList<String>>) in.readObject();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
+	}
 }
